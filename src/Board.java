@@ -95,8 +95,6 @@ public class Board
     	for (BoardListener listener : listeners) {
     	    listener.boardChanged();
     	}
-        System.out.println(snake.getxPos());
-        System.out.println(snake.getyPos());
     }
 
     public SquareType getSquareType(int x, int y) {
