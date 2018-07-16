@@ -35,7 +35,15 @@ public class GameFrame extends JFrame
 	this.setLayout(new BorderLayout());
 	this.add(component, BorderLayout.CENTER);
 
-	//this.setSize(800, 800);
+	final Action tick = new AbstractAction() {
+	    @Override public void actionPerformed(final ActionEvent e) {
+	        board.tick();
+	    }
+	};
+
+	final Timer clockTimer = new Timer(100, tick);
+	clockTimer.setCoalesce(true);
+	clockTimer.start();
 
 	this.pack();
 	this.setVisible(true);

@@ -1,4 +1,4 @@
 public enum SquareType
 {
-    EMPTY, FOOD, SNAKE
+    EMPTY, FOOD, SNAKE, OBSTACLE
 }

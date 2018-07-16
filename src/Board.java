@@ -20,6 +20,12 @@ public class Board
     private int squareWidth;
     private int squareHeight;
 
+  //  private boolean movingUp;
+  //  private boolean movingLeft;
+  //  private boolean movingRight;
+  //  private boolean movingDown;
+
+    private String currentDirection = "still";
 
     public Board(final int width, final int height) {
         this.width = width;
@@ -27,6 +33,13 @@ public class Board
         this.squareWidth = SQUAREWIDTH;
         this.squareHeight = SQUAREHEIGHT;
         squares = new SquareType[width+4][height+4];
+
+        // Creates a border outside the board
+        for (int i = 0; i < width + 2; i++) {
+            for (int j =0; j<height + 2; j++) {
+                squares[i][j] = SquareType.OBSTACLE;
+            }
+        }
 
         for (int i = 0; i < width; i++) {
             for (int j =0; j<height; j++) {
@@ -59,32 +72,68 @@ public class Board
         }
     }
 
+    public void tick() {
+        switch (currentDirection) {
+            case "up":
+                squares[snake.getxPos()][snake.getyPos() - 1] = SquareType.SNAKE;
+                squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
+                snake.setyPos(snake.getyPos() - 1);
+                break;
+            case "left":
+                squares[snake.getxPos() - 1][snake.getyPos()] = SquareType.SNAKE;
+                squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
+                snake.setxPos(snake.getxPos() - 1);
+            break;
+            case "right":
+                squares[snake.getxPos() + 1][snake.getyPos()] = SquareType.SNAKE;
+                squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
+                snake.setxPos(snake.getxPos() + 1);
+                break;
+            case "down":
+                squares[snake.getxPos()][snake.getyPos() + 1] = SquareType.SNAKE;
+                squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
+                snake.setyPos(snake.getyPos() + 1);
+                break;
+            default:
+                break;
+        }
+        notifyListeners();
+    }
+
     public void moveUp() {
-       squares[snake.getxPos()][snake.getyPos()-1] = SquareType.SNAKE;
-       squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
-       snake.setyPos(snake.getyPos()-1);
-       notifyListeners();
+        if (currentDirection.equals("down")) {
+            currentDirection = "down";
+        }
+        else {
+            currentDirection = "up";
+        }
     }
 
     public void moveLeft() {
-        squares[snake.getxPos()-1][snake.getyPos()] = SquareType.SNAKE;
-        squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
-        snake.setxPos(snake.getxPos()-1);
-        notifyListeners();
+        if (currentDirection.equals("right")) {
+            currentDirection = "right";
+        }
+        else {
+            currentDirection = "left";
+        }
     }
 
     public void moveRight() {
-        squares[snake.getxPos()+1][snake.getyPos()] = SquareType.SNAKE;
-        squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
-        snake.setxPos(snake.getxPos()+1);
-        notifyListeners();
+        if (currentDirection.equals("left")) {
+            currentDirection = "left";
+        }
+        else {
+            currentDirection = "right";
+        }
     }
 
     public void moveDown() {
-        squares[snake.getxPos()][snake.getyPos()+1] = SquareType.SNAKE;
-        squares[snake.getxPos()][snake.getyPos()] = SquareType.EMPTY;
-        snake.setyPos(snake.getyPos()+1);
-        notifyListeners();
+        if (currentDirection.equals("up")) {
+            currentDirection = "up";
+        }
+        else {
+            currentDirection = "down";
+        }
     }
 
     public void addBoardListener(BoardListener bl) {
