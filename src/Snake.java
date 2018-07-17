@@ -10,7 +10,6 @@ public class Snake
 	this.yPos = yPos;
     }
 
-
     public void setxPos(final int xPos) {
 	this.xPos = xPos;
     }

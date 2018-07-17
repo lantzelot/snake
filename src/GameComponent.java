@@ -58,8 +58,8 @@ public class GameComponent extends JComponent implements BoardListener
 	super.paintComponent(g);
 	final Graphics2D g2d = (Graphics2D) g;
 
-	for (int w = 0; w < board.getWidth() + 2; w++) {
-	    for (int h = 0; h < board.getHeight() + 2; h++) {
+	for (int w = 0; w < board.getWidth(); w++) {
+	    for (int h = 0; h < board.getHeight(); h++) {
 	        SquareType type = board.getSquareType(w, h);
 
 	        switch (type) {
@@ -67,33 +67,33 @@ public class GameComponent extends JComponent implements BoardListener
 		        g2d.setColor(Color.BLACK);
 		        g2d.fillRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
 				     board.getSquareWidth(), board.getSquareHeight());
-		        g2d.setColor(Color.WHITE);
-			g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
-				     board.getSquareWidth(), board.getSquareHeight());
+		    //    g2d.setColor(Color.WHITE);
+		//	g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
+		//		     board.getSquareWidth(), board.getSquareHeight());
 			break;
 		    case FOOD:
 			g2d.setColor(Color.YELLOW);
 			g2d.fillRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
 				     board.getSquareWidth(), board.getSquareHeight());
-			g2d.setColor(Color.WHITE);
-			g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
-				     board.getSquareWidth(), board.getSquareHeight());
+		//	g2d.setColor(Color.WHITE);
+		//	g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
+		//		     board.getSquareWidth(), board.getSquareHeight());
 			break;
 		    case SNAKE:
 			g2d.setColor(Color.RED);
 			g2d.fillRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
 				     board.getSquareWidth(), board.getSquareHeight());
-			g2d.setColor(Color.WHITE);
-			g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
-				     board.getSquareWidth(), board.getSquareHeight());
+		//	g2d.setColor(Color.WHITE);
+		//	g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
+		//		     board.getSquareWidth(), board.getSquareHeight());
 			break;
 		    case OBSTACLE:
 			g2d.setColor(Color.GRAY);
 			g2d.fillRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
 				     board.getSquareWidth(), board.getSquareHeight());
-			g2d.setColor(Color.WHITE);
-			g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
-				     board.getSquareWidth(), board.getSquareHeight());
+		//	g2d.setColor(Color.WHITE);
+		//	g2d.drawRect(w*board.getSquareWidth(), h*board.getSquareHeight(),
+		//		     board.getSquareWidth(), board.getSquareHeight());
 		        break;
 		    default:
 			throw new IllegalArgumentException("Wrong");
