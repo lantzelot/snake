@@ -34,17 +34,17 @@ public class Board
         this.height = height;
         this.squareWidth = SQUAREWIDTH;
         this.squareHeight = SQUAREHEIGHT;
-        squares = new SquareType[width+4][height+4];
+        squares = new SquareType[width][height];
 
         // Creates a border outside the board
-        for (int i = 0; i < width; i++) {
+       /* for (int i = 0; i < width; i++) {
             for (int j =0; j < height; j++) {
                 squares[i][j] = SquareType.OBSTACLE;
             }
-        }
+        }*/
 
-        for (int i = 1; i < width - 1; i++) {
-            for (int j = 1; j<height - 1; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j<height; j++) {
                 squares[i][j] = SquareType.EMPTY;
             }
         }
@@ -90,37 +90,69 @@ public class Board
     }
 
     public void tick() {
-        squares[snakeHead.getxPos()][snakeHead.getyPos()] = SquareType.SNAKE;
-        switch (currentDirection) {
-            case "up":
-                moveJoints();
-                snakeHead.setyPos(snakeHead.getyPos() - 1);
-                collisionHandler.handleCollision(this);
-                squares[snakeHead.getxPos()][snakeHead.getyPos()] = SquareType.SNAKE;
-                break;
-            case "left":
-                moveJoints();
-                snakeHead.setxPos(snakeHead.getxPos() - 1);
-                collisionHandler.handleCollision(this);
-                squares[snakeHead.getxPos()][snakeHead.getyPos()] = SquareType.SNAKE;
-            break;
-            case "right":
-                moveJoints();
-                snakeHead.setxPos(snakeHead.getxPos() + 1);
-                collisionHandler.handleCollision(this);
-                squares[snakeHead.getxPos()][snakeHead.getyPos()] = SquareType.SNAKE;
-                break;
-            case "down":
-                moveJoints();
-                snakeHead.setyPos(snakeHead.getyPos() + 1);
-                collisionHandler.handleCollision(this);
-                squares[snakeHead.getxPos()][snakeHead.getyPos()] = SquareType.SNAKE;
-                break;
-            default:
-                break;
+        if (hitsEdge()) {
+            checkCollisions();
         }
-
+        else {
+            switch (currentDirection) {
+                case "up":
+                    moveJoints();
+                    snakeHead.setyPos(snakeHead.getyPos() - 1);
+                    checkCollisions();
+                    break;
+                case "left":
+                    moveJoints();
+                    snakeHead.setxPos(snakeHead.getxPos() - 1);
+                    checkCollisions();
+                    break;
+                case "right":
+                    moveJoints();
+                    snakeHead.setxPos(snakeHead.getxPos() + 1);
+                    checkCollisions();
+                    break;
+                case "down":
+                    moveJoints();
+                    snakeHead.setyPos(snakeHead.getyPos() + 1);
+                    checkCollisions();
+                    break;
+                default:
+                    break;
+            }
+        }
         notifyListeners();
+    }
+
+    public boolean hitsEdge() {
+        if (snakeHead.getyPos() == 0 && currentDirection.equals("up")) {
+            moveJoints();
+            snakeHead.setyPos(height-1);
+            return true;
+        }
+        else if (snakeHead.getxPos() == 0 && currentDirection.equals("left")) {
+            moveJoints();
+            snakeHead.setxPos(width-1);
+            return true;
+        }
+        else if (snakeHead.getxPos() == (width - 1) && currentDirection.equals("right")) {
+            moveJoints();
+            snakeHead.setxPos(0);
+            return true;
+        }
+        else if (snakeHead.getyPos() == (height - 1) && currentDirection.equals("down")) {
+            moveJoints();
+            snakeHead.setyPos(0);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void checkCollisions() {
+        collisionHandler.handleCollision(this);
+        if (!gameOver) {
+            squares[snakeHead.getxPos()][snakeHead.getyPos()] = SquareType.SNAKE;
+        }
     }
 
     public void moveJoints() {
@@ -133,7 +165,6 @@ public class Board
             joint.setxPos(nextJoint.getxPos());
             squares[joint.getxPos()][joint.getyPos()] = SquareType.SNAKE;
         }
-
     }
 
     public void moveUp() {
