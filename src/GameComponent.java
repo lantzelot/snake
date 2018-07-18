@@ -100,7 +100,9 @@ public class GameComponent extends JComponent implements BoardListener
 		}
 	    }
 	}
-
+	g2d.setColor(Color.WHITE);
+	g2d.setFont(new Font("serif", Font.PLAIN, 30));
+	g2d.drawString("" + board.getCurrentScore(), 20, 30);
     }
 
     @Override public void boardChanged() {

@@ -9,7 +9,8 @@ public class Board
     private int width;
     private int height;
 
-    private Food food = null;
+   // private Food food = null;
+    private List<Food> foodList = new ArrayList<>();
     private Snake snakeHead = null;
 
     private List<BoardListener> listeners = new ArrayList<>();
@@ -26,6 +27,8 @@ public class Board
     private String currentDirection = "still";
 
     private List<Snake> snakeJoints = new ArrayList<>();
+
+    private int currentScore;
 
     private boolean gameOver = false;
 
@@ -57,7 +60,8 @@ public class Board
         int random2 = ThreadLocalRandom.current().nextInt(0, this.height);
 
         if (squares[random1][random2] == SquareType.EMPTY) {
-            food = new Food(random1, random2);
+            Food food = new Food(random1, random2);
+            foodList.add(food);
             squares[random1][random2] = SquareType.FOOD;
         }
         else {
@@ -65,9 +69,10 @@ public class Board
         }
     }
 
-    public void removeFood() {
+    public void removeFood(int i) {
+        Food food = foodList.get(i);
         squares[food.getxPos()][food.getyPos()] = SquareType.EMPTY;
-        food = null;
+        foodList.remove(food);
     }
 
     public void spawnSnakeHead() {
@@ -87,6 +92,10 @@ public class Board
     public void spawnSnakeJoint() {
         Snake joint = new Snake(snakeHead.getxPos(), snakeHead.getyPos());
         snakeJoints.add(0, joint);
+    }
+
+    public void increaseScore(int score) {
+        currentScore += score;
     }
 
     public void tick() {
@@ -221,8 +230,16 @@ public class Board
         return snakeHead;
     }
 
-    public Food getFood() {
-        return food;
+    public List<Food> getFoodList() {
+        return foodList;
+    }
+
+    public Food getFood(int i) {
+        return foodList.get(i);
+    }
+
+    public int getCurrentScore() {
+        return currentScore;
     }
 
     public boolean isGameOver() {

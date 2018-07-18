@@ -55,7 +55,7 @@ public class GameFrame extends JFrame
 	    }
 	};
 
-	final Timer clockTimer = new Timer(75, tick);
+	final Timer clockTimer = new Timer(80, tick);
 	clockTimer.setCoalesce(true);
 	clockTimer.start();
 
